@@ -1,0 +1,7 @@
+# No third-party dependencies required.
+# Python 3.10+ standard library only.
+#
+# To run:
+#   python main.py
+#   python main.py --csv
+#   python main.py --file path/to/claim.837
