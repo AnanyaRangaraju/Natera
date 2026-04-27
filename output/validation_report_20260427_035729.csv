@@ -1,0 +1,82 @@
+claim_id,payer,subscriber,date_of_service,total_charge,risk_level,rule_id,category,rule_description,status,detail,segment
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,PASS,NPI 1234567893 is valid,NM1*85
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,FAIL,NPI '9876543210' fails Luhn check digit validation,NM1*82
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,FAIL,NPI '1112223334' fails Luhn check digit validation,NM1*DN
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,ELIG-001,Eligibility,Patient member ID present,PASS,Member ID: XYZ123456789,NM1*IL
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,DX-001,Diagnosis Codes,ICD-10 format: C189,FAIL,"ICD-10 code 'C189' does not match expected format (e.g. C18.9, Z15.82)",HI
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,SVC-001,Service Lines,CPT/HCPCS format: 81479,PASS,Valid CPT code,SV1
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $2,500.00",SV1
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,POS-001,Place of Service,Place of service appropriate for lab billing,PASS,POS 81 = Independent Laboratory — correct for independent lab billing,CLM
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,TF-001,Timely Filing,Claim within timely filing deadline,FAIL,DOS: 2023-04-10 | Days elapsed: 1113 | Payer window: 180 days | EXCEEDED by 933 days — permanent write-off risk,DTP*472
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 81479 per LCD policy,PASS,"CPT 81479 (Unlisted molecular pathology procedure) | Diagnosis codes ['C189'] | Covered prefixes: ['C', 'D3', 'D4', 'D5', 'Z15', 'Z80', 'Z85']",HI + SV1
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,AUTH-001,Prior Authorization,Prior auth number present for CPT 81479,PASS,Auth number AUTH20230001 found in REF*D9 segment,REF*D9
+CLAIM001,AETNA,JOHN SMITH,2023-04-10,2500.0,HIGH RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $2,500.00",CLM
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,FAIL,NPI '123456789' is 9 digits — must be exactly 10,NM1*85
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,FAIL,NPI '9988776655' fails Luhn check digit validation,NM1*82
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,FAIL,NPI 'ABCD1234567' contains non-numeric characters,NM1*DN
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,ELIG-001,Eligibility,Patient member ID present,PASS,Member ID: ABC987654321,NM1*IL
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,DX-001,Diagnosis Codes,ICD-10 format: J329,FAIL,"ICD-10 code 'J329' does not match expected format (e.g. C18.9, Z15.82)",HI
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,SVC-001,Service Lines,CPT/HCPCS format: 0172U,PASS,Valid PLA (Proprietary Laboratory Analyses) code — 0172U is a lab-specific HCPCS,SV1
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $3,200.00",SV1
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,POS-001,Place of Service,Place of service appropriate for lab billing,PASS,POS 81 = Independent Laboratory — correct for independent lab billing,CLM
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,TF-001,Timely Filing,Claim within timely filing deadline,FAIL,DOS: 2023-04-08 | Days elapsed: 1115 | Payer window: 180 days | EXCEEDED by 935 days — permanent write-off risk,DTP*472
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 0172U per LCD policy,FAIL,"CPT 0172U (Signatera - tumor-informed ctDNA) requires diagnosis from: ['C18', 'C19', 'C20', 'C34', 'C50', 'C61', 'C64', 'Z85']. Found: ['J329']. Payer will deny for medical necessity — fix diagnosis code before submission.",HI + SV1
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,AUTH-001,Prior Authorization,Prior auth number present for CPT 0172U,FAIL,CPT 0172U requires prior authorization from AETNA. No REF*D9 auth number found — claim will deny CO-97 (auth required).,REF*D9
+CLAIM002,AETNA,MARY JONES,2023-04-08,3200.0,HIGH RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $3,200.00",CLM
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,PASS,NPI 1234567893 is valid,NM1*85
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,PASS,NPI 5544332211 is valid,NM1*82
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,FAIL,NPI '6677889900' fails Luhn check digit validation,NM1*DN
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,ELIG-001,Eligibility,Patient member ID present,PASS,Member ID: DEF456789012,NM1*IL
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,DX-001,Diagnosis Codes,ICD-10 format: Z1582,FAIL,"ICD-10 code 'Z1582' does not match expected format (e.g. C18.9, Z15.82)",HI
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,SVC-001,Service Lines,CPT/HCPCS format: 81519,PASS,Valid CPT code,SV1
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $4,800.00",SV1
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,POS-001,Place of Service,Place of service appropriate for lab billing,PASS,POS 81 = Independent Laboratory — correct for independent lab billing,CLM
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,TF-001,Timely Filing,Claim within timely filing deadline,FAIL,DOS: 2022-09-01 | Days elapsed: 1334 | Payer window: 365 days | EXCEEDED by 969 days — permanent write-off risk,DTP*472
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 81519 per LCD policy,FAIL,CPT 81519 (Oncotype DX Breast Recurrence Score) requires diagnosis from: ['C50']. Found: ['Z1582']. Payer will deny for medical necessity — fix diagnosis code before submission.,HI + SV1
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,AUTH-001,Prior Authorization,Prior auth number present for CPT 81519,FAIL,CPT 81519 requires prior authorization from BCBS. No REF*D9 auth number found — claim will deny CO-97 (auth required).,REF*D9
+CLAIM003,BCBS,DAVID BROWN,2022-09-01,4800.0,HIGH RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $4,800.00",CLM
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,PASS,NPI 1234567893 is valid,NM1*85
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,FAIL,NPI '3344556677' fails Luhn check digit validation,NM1*82
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,FAIL,NPI '8899001122' fails Luhn check digit validation,NM1*DN
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,ELIG-001,Eligibility,Patient member ID present,FAIL,Member ID is missing — claim will reject at payer intake,NM1*IL
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,DX-001,Diagnosis Codes,ICD-10 format: O281,FAIL,"ICD-10 code 'O281' does not match expected format (e.g. C18.9, Z15.82)",HI
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,SVC-001,Service Lines,CPT/HCPCS format: 81420,PASS,Valid CPT code,SV1
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $1,900.00",SV1
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,POS-001,Place of Service,Place of service appropriate for lab billing,WARNING,POS 11 = Office — lab claims typically require POS 81 (Independent Laboratory). Incorrect POS may cause payer-specific rejection or payment reduction.,CLM
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,TF-001,Timely Filing,Claim within timely filing deadline,FAIL,DOS: 2023-04-05 | Days elapsed: 1118 | Payer window: 365 days | EXCEEDED by 753 days — permanent write-off risk,DTP*472
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 81420 per LCD policy,PASS,"CPT 81420 (Fetal chromosomal aneuploidy (NIPT/Panorama)) | Diagnosis codes ['O281'] | Covered prefixes: ['O28', 'O09', 'Z34', 'Z36', 'Z13', 'Z35']",HI + SV1
+CLAIM004,UNITED HEALTH,SUSAN DAVIS,2023-04-05,1900.0,HIGH RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $1,900.00",CLM
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,PASS,NPI 1234567893 is valid,NM1*85
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,FAIL,NPI '2233445566' fails Luhn check digit validation,NM1*82
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,FAIL,NPI '7788990011' fails Luhn check digit validation,NM1*DN
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,ELIG-001,Eligibility,Patient member ID present,PASS,Member ID: GHI789012345,NM1*IL
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,DX-001,Diagnosis Codes,ICD-10 format: Z360,FAIL,"ICD-10 code 'Z360' does not match expected format (e.g. C18.9, Z15.82)",HI
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,SVC-001,Service Lines,CPT/HCPCS format: 81420,PASS,Valid CPT code,SV1
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $1,250.00",SV1
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,POS-001,Place of Service,Place of service appropriate for lab billing,PASS,POS 81 = Independent Laboratory — correct for independent lab billing,CLM
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,TF-001,Timely Filing,Claim within timely filing deadline,FAIL,DOS: 2023-04-12 | Days elapsed: 1111 | Payer window: 180 days | EXCEEDED by 931 days — permanent write-off risk,DTP*472
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 81420 per LCD policy,PASS,"CPT 81420 (Fetal chromosomal aneuploidy (NIPT/Panorama)) | Diagnosis codes ['Z360'] | Covered prefixes: ['O28', 'O09', 'Z34', 'Z36', 'Z13', 'Z35']",HI + SV1
+CLAIM005,CIGNA,AMANDA WILSON,2023-04-12,1250.0,HIGH RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $1,250.00",CLM
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,PASS,NPI 1234567893 is valid,NM1*85
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,PASS,NPI 1245319599 is valid,NM1*82
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,PASS,NPI 1528060837 is valid,NM1*DN
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,ELIG-001,Eligibility,Patient member ID present,PASS,Member ID: UHC567890123,NM1*IL
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,DX-001,Diagnosis Codes,ICD-10 format: C189,FAIL,"ICD-10 code 'C189' does not match expected format (e.g. C18.9, Z15.82)",HI
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,SVC-001,Service Lines,CPT/HCPCS format: 0172U,PASS,Valid PLA (Proprietary Laboratory Analyses) code — 0172U is a lab-specific HCPCS,SV1
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $3,200.00",SV1
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,POS-001,Place of Service,Place of service appropriate for lab billing,PASS,POS 81 = Independent Laboratory — correct for independent lab billing,CLM
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,TF-001,Timely Filing,Claim within timely filing deadline,PASS,DOS: 2026-03-10 | 317 days remaining within 365-day window,DTP*472
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 0172U per LCD policy,PASS,"CPT 0172U (Signatera - tumor-informed ctDNA) | Diagnosis codes ['C189'] | Covered prefixes: ['C18', 'C19', 'C20', 'C34', 'C50', 'C61', 'C64', 'Z85']",HI + SV1
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,AUTH-001,Prior Authorization,Prior auth number present for CPT 0172U,PASS,Auth number AUTH20260006 found in REF*D9 segment,REF*D9
+CLAIM006,UNITED HEALTH,PETER NGUYEN,2026-03-10,3200.0,HIGH RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $3,200.00",CLM
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,NPI-001,NPI Validation,Billing provider NPI format and check digit,PASS,NPI 1234567893 is valid,NM1*85
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,NPI-002,NPI Validation,Rendering provider NPI format and check digit,PASS,NPI 1962499988 is valid,NM1*82
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,NPI-003,NPI Validation,Ordering/referring provider NPI format and check digit,PASS,NPI 1346355757 is valid,NM1*DN
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,ELIG-001,Eligibility,Patient member ID present,PASS,Member ID: AET234567890,NM1*IL
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,DX-001,Diagnosis Codes,ICD-10 format: O28.1,PASS,Valid,HI
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,SVC-001,Service Lines,CPT/HCPCS format: 81420,PASS,Valid CPT code,SV1
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,CHG-001,Charge Integrity,Service line charge amount > 0,PASS,"Charge: $1,250.00",SV1
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,POS-001,Place of Service,Place of service appropriate for lab billing,PASS,POS 81 = Independent Laboratory — correct for independent lab billing,CLM
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,TF-001,Timely Filing,Claim within timely filing deadline,PASS,DOS: 2026-03-15 | 137 days remaining within 180-day window,DTP*472
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,LCD-001,LCD / Medical Necessity,Diagnosis supports CPT 81420 per LCD policy,PASS,"CPT 81420 (Fetal chromosomal aneuploidy (NIPT/Panorama)) | Diagnosis codes ['O28.1'] | Covered prefixes: ['O28', 'O09', 'Z34', 'Z36', 'Z13', 'Z35']",HI + SV1
+CLAIM007,AETNA,PRIYA PATEL,2026-03-15,1250.0,LOW RISK,CHG-000,Charge Integrity,CLM total charge amount > 0,PASS,"Total charge: $1,250.00",CLM
